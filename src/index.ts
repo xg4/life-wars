@@ -32,7 +32,7 @@ export default class Game {
   }
   public static version = version
   public context: CanvasRenderingContext2D
-  private canvas: HTMLCanvasElement
+  public canvas: HTMLCanvasElement
 
   private level: number
   private stages: Stage[]

@@ -2,7 +2,7 @@ import Game from '../index'
 import Model from '../model'
 
 export default class Stage {
-  private elements: Model[]
+  protected elements: Model[]
 
   constructor(protected game: Game) {
     this.elements = []

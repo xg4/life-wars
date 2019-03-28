@@ -22,10 +22,18 @@ export default class MainStage extends Stage {
 
     xs.forEach(x => {
       if (x.hungry) {
-        x.go(foods[0])
+        if (foods[0]) {
+          x.go(foods[0])
+        }
       }
 
-      // collide(x)
+      foods.forEach(food => {
+        if (collide(x, food)) {
+          if (food.alive) {
+            x.inject(food)
+          }
+        }
+      })
     })
   }
 

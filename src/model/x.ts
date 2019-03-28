@@ -31,6 +31,9 @@ export default class X extends Model {
     const { context: ctx } = this.game
 
     ctx.save()
+    if (this.hungry) {
+      ctx.strokeStyle = '#f00'
+    }
     ctx.strokeRect(this.x, this.y, this.width, this.height)
     ctx.restore()
   }
@@ -48,6 +51,10 @@ export default class X extends Model {
     this.x += this.speedX
     this.y += this.speedY
 
-    this.vitality -= 0.1
+    this.vitality -= 0.01
+  }
+
+  public inject(food: Food) {
+    this.vitality += food.export()
   }
 }

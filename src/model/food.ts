@@ -8,7 +8,10 @@ export default class Food extends Model {
     super(game, x, y)
 
     this.radius = 5
+    this.width = this.radius
+    this.height = this.radius
   }
+
   public render() {
     super.render()
 
@@ -19,5 +22,11 @@ export default class Food extends Model {
     ctx.fill()
     ctx.closePath()
     ctx.restore()
+  }
+
+  public export() {
+    this.hp -= this.power
+
+    return this.power + 29
   }
 }

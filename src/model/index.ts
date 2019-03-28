@@ -13,11 +13,11 @@ export default class Model {
 
   public speedX: number
   public speedY: number
+  protected hp: number
 
-  private power: number
-  private hp: number
+  protected power: number
 
-  private clicked: boolean
+  protected clicked: boolean
 
   constructor(
     protected game: Game,
@@ -49,6 +49,9 @@ export default class Model {
   }
 
   public go({ x, y }: { x: number; y: number }) {
+    if (!x || !y) {
+      return
+    }
     this.speedX = (x - this.x) / 100
     this.speedY = (y - this.y) / 100
     this.x += this.speedX

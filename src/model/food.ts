@@ -4,7 +4,7 @@ import Model from './index'
 export default class Food extends Model {
   private radius: number
 
-  constructor(game: Game, x: number, y: number) {
+  constructor(game: Game, x?: number, y?: number) {
     super(game, x, y)
 
     this.radius = 5

@@ -49,13 +49,17 @@ export default class Game {
     this.run()
   }
 
+  public pass() {
+    this.level++
+  }
+
   private run(now: number = 0, prev: number = 0) {
     const diff = now - prev
     const fps = diff ? Math.round(1000 / diff) : 0
     this.update()
     this.clean()
     this.renderFPS(fps)
-    this.renderVersion()
+    // this.renderVersion()
     this.render()
 
     raf(timestamp => {
@@ -79,10 +83,6 @@ export default class Game {
       return
     }
     this.stage.update()
-  }
-
-  private pass() {
-    this.level++
   }
 
   private renderVersion() {

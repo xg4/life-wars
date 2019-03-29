@@ -1,13 +1,14 @@
 import Game from '../index'
+import { randomBetween } from '../util'
 
 export default class Model {
-  // get width() {}
-
-  // get height() {}
-
   get alive() {
     return this.hp > 0
   }
+
+  public x: number
+  public y: number
+
   public height: number
   public width: number
 
@@ -17,23 +18,20 @@ export default class Model {
 
   protected power: number
 
-  protected clicked: boolean
+  protected targetPosition?: { x: number; y: number }
 
-  constructor(
-    protected game: Game,
-    public x: number = 0,
-    public y: number = 0
-  ) {
+  constructor(protected game: Game, x?: number, y?: number) {
     this.height = 0
     this.width = 0
+
+    this.x = x || this.randomX()
+    this.y = y || this.randomY()
 
     this.speedX = 0
     this.speedY = 0
 
     this.hp = 1
     this.power = 1
-
-    this.clicked = false
   }
 
   public render() {
@@ -41,39 +39,36 @@ export default class Model {
   }
 
   public update() {
-    this.checkSpeed()
+    this.limit()
   }
 
   public attacked(model: Model) {
     this.hp -= model.power
   }
 
-  public go({ x, y }: { x: number; y: number }) {
-    if (!x || !y) {
-      return
-    }
-    this.speedX = (x - this.x) / 100
-    this.speedY = (y - this.y) / 100
-    this.x += this.speedX
-    this.y += this.speedY
-  }
-
-  public checkClicked({ x, y }: { x: number; y: number }) {
-    this.clicked =
+  public isClicked({ x, y }: { x: number; y: number }) {
+    return (
       x > this.x &&
       x < this.x + this.width &&
       y > this.y &&
       y < this.y + this.height
-
-    return this.clicked
+    )
   }
 
-  private checkSpeed() {
+  protected limit() {
     if (this.x + this.width > this.game.width || this.x < 0) {
       this.speedX = -this.speedX
     }
     if (this.y + this.height > this.game.height || this.y < 0) {
       this.speedY = -this.speedY
     }
+  }
+
+  private randomX() {
+    return randomBetween(0, this.game.width - this.width)
+  }
+
+  private randomY() {
+    return randomBetween(0, this.game.height - this.height)
   }
 }

@@ -17,20 +17,27 @@ export default class MainStage extends Stage {
   public update() {
     super.update()
 
-    const foods = this.elements.filter(el => el instanceof Food) as Food[]
-    const xs = this.elements.filter(el => el instanceof X) as X[]
+    const foods: Food[] = []
+    const xs: X[] = []
+
+    for (const el of this.elements) {
+      if (el instanceof Food) {
+        foods.push(el)
+      }
+      if (el instanceof X) {
+        xs.push(el)
+      }
+    }
 
     xs.forEach(x => {
       if (x.hungry) {
-        if (foods[0]) {
-          x.go(foods[0])
-        }
+        x.find(foods).go()
       }
 
       foods.forEach(food => {
         if (collide(x, food)) {
           if (food.alive) {
-            x.inject(food)
+            x.eat(food)
           }
         }
       })
@@ -38,13 +45,11 @@ export default class MainStage extends Stage {
   }
 
   private setup() {
-    this.foods = [new Food(this.game, 20, 80)]
-
     this.addElements([
-      new X(this.game, 250, 280),
-      new X(this.game, 50, 80),
-      new X(this.game, 150, 180),
-      ...this.foods
+      new X(this.game),
+      new X(this.game),
+      new X(this.game),
+      new Food(this.game)
     ])
 
     this.generateFood()
@@ -66,9 +71,10 @@ export default class MainStage extends Stage {
     canvas.onmousedown = ({ offsetX: startX, offsetY: startY }) => {
       const xs = this.elements.filter(el => el instanceof X) as X[]
       xs.forEach(x => {
-        if (x.checkClicked({ x: startX, y: startY })) {
+        if (x.isClicked({ x: startX, y: startY })) {
           canvas.onmousemove = ({ offsetX: moveX, offsetY: moveY }) => {
-            x.go({ x: moveX, y: moveY })
+            x.x = moveX
+            x.y = moveY
           }
           canvas.onmouseup = function() {
             this.onmousemove = null
